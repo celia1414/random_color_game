@@ -1,7 +1,7 @@
 // random color game
 // Feb. 22, 2020
 
-PImage end;
+PImage end, fail;
 color c1, c2;
 int s = 800;        // background size
 int m = 1, n = 1;
@@ -16,10 +16,20 @@ void setup() {
   c1 = color(255, 190, 200);
   c2 = color(30, 190, 255);
   end = loadImage("merci.png");
+  fail = loadImage("fail.png");
 }
 
 void draw() {
-  if (range <= 5) image(end, 0, 0);
+  if (range <= 5) {
+    if (range == 0) {
+      image(fail, 0, 0);
+      return;
+    }
+    else {
+      image(end, 0, 0);
+      return;
+    }
+  }
   else blocks();
 }
 
@@ -43,9 +53,10 @@ void mouseClicked() {
      c2 = color(redv, grev, bluv);
      fill(c2);
      rect(1 + m * s / num, 1 + n * s / num, s /num - 2, s / num - 2);
-     i *= -1;
+     if (random(1) > 0.5) i = 1;
+     else i = -1;
      range -= 5;
-  }
+  } else range = 0;
 }
 
 /* generate num*num blocks */
